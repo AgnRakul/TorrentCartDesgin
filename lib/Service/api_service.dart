@@ -1,28 +1,31 @@
-import 'dart:developer';
-
-import 'package:http/http.dart' as http;
-
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import '../Model/torrent_model.dart';
-
 class ApiService {
-  final url =
-      "https://raw.githubusercontent.com/RakulAgn/Plans/main/Torrent.json?token=GHSAT0AAAAAABVQ4ENB5IAG3M6U7TWWGZIGYVFT6IQ";
+  final Dio _dio = Dio(BaseOptions(
+      baseUrl: "https://raw.githubusercontent.com",
+      connectTimeout: 5000,
+      receiveTimeout: 3000));
 
   Future<List<TorrentModel>?> getTorrentData() async {
+    List<TorrentModel>? torrentModel;
     try {
-      final resp = await http.get(Uri.parse(url));
-
-      if (resp.statusCode == 200) {
-        final torrentModel = torrentModelFromJson(resp.body);
-        log(resp.body);
-        return torrentModel;
+      Response torrentData = await _dio
+          .get("/RakulAgn/TorrentCartDesgin/master/lib/Service/Torrent.json");
+      torrentModel = torrentModelFromJson(torrentData.data);
+      debugPrint("Status Code: ${torrentData.statusCode}");
+    } on DioError catch (e) {
+      if (e.response != null) {
+        debugPrint('Dio error!');
+        debugPrint('STATUS: ${e.response?.statusCode}');
+        debugPrint('DATA: ${e.response?.data}');
+        debugPrint('HEADERS: ${e.response?.headers}');
       } else {
-        throw Exception("Failed to get Torrent Data");
+        // Error due to setting up or sending the request
+        debugPrint('Error sending request!');
+        debugPrint(e.message);
       }
-    } catch (e) {
-      log(e.toString());
     }
-    return null;
+    return torrentModel;
   }
 }
-

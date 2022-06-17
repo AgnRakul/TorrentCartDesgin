@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -67,12 +68,32 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
-                            child: Image.network(
-                              torrent.torrentList[index].imageUrl,
+                            child: CachedNetworkImage(
+                              imageUrl: torrent.torrentList[index].imageUrl,
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) => SizedBox(
+                                width: 3,
+                                height: 3,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                      value: downloadProgress.progress),
+                                ),
+                              ),
+                              errorWidget: (context, url, error) => const Icon(
+                                Icons.error,
+                                size: 100,
+                                color: Colors.red,
+                              ),
                               height: 160.0,
                               width: 100.0,
                               fit: BoxFit.cover,
                             ),
+                            // child: Image.network(
+                            //   torrent.torrentList[index].imageUrl,
+                            //   height: 160.0,
+                            //   width: 100.0,
+                            //   fit: BoxFit.cover,
+                            // ),
                           ),
                           const SizedBox(
                             width: 6,
