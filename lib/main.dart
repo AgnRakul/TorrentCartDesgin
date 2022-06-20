@@ -6,7 +6,11 @@ import 'View/home_screen.dart';
 void main() {
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider<TorrentProvider>(create: (_) => TorrentProvider())],
+      providers: [
+        ChangeNotifierProvider<TorrentProvider>(
+          create: (_) => TorrentProvider(),
+        )
+      ],
       child: const MyApp(),
     ),
   );
@@ -17,9 +21,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      theme: ThemeData(),
+      home: const HomeScreen(),
     );
   }
 }

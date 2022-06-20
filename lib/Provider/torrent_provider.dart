@@ -6,17 +6,15 @@ import '../Service/api_service.dart';
 class TorrentProvider extends ChangeNotifier {
   List<TorrentModel> torrentList = [];
 
-  void getTorrentList() {
-    ApiService().getTorrentData().then(
-          (value) => {
-            if (value!.isNotEmpty)
-              {
-                torrentList = [...value],
-                notifyListeners()
-              }
-            else
-              {torrentList = []}
-          },
-        );
+  Future<void> getTorrentList() async {
+    final apiResponse = await ApiService().getTorrentData();
+
+    if (apiResponse!.isNotEmpty) {
+      torrentList = apiResponse;
+    } else {
+      torrentList = [];
+    }
+
+    notifyListeners();
   }
 }
