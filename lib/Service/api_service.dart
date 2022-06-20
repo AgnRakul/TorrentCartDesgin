@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '../Model/torrent_model.dart';
+
 class ApiService {
-  final Dio _dio = Dio(BaseOptions(
+  final _dio = Dio(BaseOptions(
       baseUrl: "https://raw.githubusercontent.com",
       connectTimeout: 5000,
       receiveTimeout: 3000));
